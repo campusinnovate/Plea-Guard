@@ -29,7 +29,7 @@ Transisi tahap hanya tersedia setelah alasan umum (minimal 20 karakter) dan pras
 
 ## Preview web publik
 
-Preview tersedia di [https://campusinnovate.github.io/Plea-Guard/](https://campusinnovate.github.io/Plea-Guard/). Setiap push ke branch `main` menjalankan analisis Flutter, membangun web dengan base path GitHub Pages, lalu menerbitkan preview secara otomatis. Workflow dapat dijalankan ulang lewat tab **Actions**.
+Preview tersedia di [https://campusinnovate.github.io/VERITAS/](https://campusinnovate.github.io/VERITAS/). Setiap push ke branch `main` menjalankan analisis Flutter, membangun web dengan base path GitHub Pages, lalu menerbitkan preview secara otomatis. Workflow dapat dijalankan ulang lewat tab **Actions**.
 
 Login demo: `andi.demo` / `veritas123`; OTP: `246810`. Seluruh data adalah simulasi lokal. Jangan masukkan data perkara atau informasi pribadi yang nyata.
 
