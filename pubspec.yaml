@@ -21,5 +21,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/kejaksaan_logo.png
     - assets/veritas_logo.svg
     - assets/veritas_logo.png
