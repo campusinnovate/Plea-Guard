@@ -610,22 +610,29 @@ class _LoginPageState extends State<LoginPage> {
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(24, 32, 24, 28),
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/kejaksaan_logo.png',
-                            width: 86, height: 96, fit: BoxFit.contain),
-                        const SizedBox(width: 10),
-                        Flexible(
-                          child: Image.asset('assets/veritas_logo.png',
-                              width: 210, height: 62, fit: BoxFit.contain),
-                        ),
-                      ],
-                    ),
+                    Image.asset('assets/veritas_logo.png',
+                        width: 300, height: 70, fit: BoxFit.contain),
                     const SizedBox(height: 5),
                     const Text('Veritas ante Confessionem',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Color(0xFF63758D))),
+                    const SizedBox(height: 14),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/kejaksaan_logo.png',
+                            width: 28, height: 30, fit: BoxFit.contain),
+                        const SizedBox(width: 8),
+                        const Flexible(
+                          child: Text('Powered by Kejaksaan Republik Indonesia',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF63758D),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 24),
                     Card(
                       child: Padding(
@@ -1102,13 +1109,8 @@ class HomePage extends StatelessWidget {
                       ]))),
               icon: const Icon(Icons.menu, color: navy)),
           const Spacer(),
-          Row(mainAxisSize: MainAxisSize.min, children: [
-            Image.asset('assets/kejaksaan_logo.png',
-                width: 26, height: 30, fit: BoxFit.contain),
-            const SizedBox(width: 6),
-            const Text('Beranda',
-                style: TextStyle(fontSize: 23, fontWeight: FontWeight.w800)),
-          ]),
+          const Text('Beranda',
+              style: TextStyle(fontSize: 23, fontWeight: FontWeight.w800)),
           const Spacer(),
           IconButton(
               onPressed: () => goToTab(3),
