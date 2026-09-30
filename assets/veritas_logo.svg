@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="200" viewBox="0 0 860 200">
+ <g transform="translate(12 10)">
+  <path d="M86 7 158 32v55c0 47-29 77-72 97C43 164 14 134 14 87V32z" fill="#102A4C" stroke="#C39A4A" stroke-width="6" stroke-linejoin="round"/>
+  <g fill="none" stroke="#F2C66D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+   <path d="M86 42v76M52 61h68M86 49l-3 8m3-8 3 8M58 62 46 92m18-30 12 30m29-30-12 30m18-30 12 30"/>
+   <path d="M43 92q17 18 34 0M94 92q17 18 34 0M86 118h-22m22 0h22m-34 0v8h24v-8"/>
+  </g>
+  <circle cx="86" cy="49" r="5" fill="#F2C66D"/>
+ </g>
+ <text x="198" y="113" fill="#102A4C" font-family="Arial, Helvetica, sans-serif" font-size="94" font-weight="700" letter-spacing="2">VERI</text>
+ <text x="448" y="113" fill="#C39A4A" font-family="Arial, Helvetica, sans-serif" font-size="94" font-weight="700" letter-spacing="2">TAS</text>
+ <text x="204" y="157" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="600" letter-spacing="5" fill="#53657C">VERITAS ANTE CONFESSIONEM</text>
+</svg>
