@@ -20,6 +20,7 @@ const blue = Color(0xFF2563EB);
 const teal = Color(0xFF168F83);
 const bg = Color(0xFFF4F7FA);
 const gold = Color(0xFFC39A4A);
+const glassLine = Color(0xFFDCE7F4);
 
 /// State demo lokal. Pada produksi, seluruh transisi, approval, dan audit harus
 /// divalidasi API server sesuai policy version dan RBAC.
@@ -550,7 +551,8 @@ class PleaGuardApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           scaffoldBackgroundColor: bg,
-          colorScheme: ColorScheme.fromSeed(seedColor: navy, primary: navy),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: navy, primary: navy, surface: const Color(0xFFFCFDFF)),
           fontFamily: 'Arial',
           pageTransitionsTheme: const PageTransitionsTheme(builders: {
             TargetPlatform.android: SmoothPageTransitions(),
@@ -560,11 +562,12 @@ class PleaGuardApp extends StatelessWidget {
             TargetPlatform.linux: SmoothPageTransitions()
           }),
           cardTheme: CardThemeData(
-            color: Colors.white,
+            color: const Color(0xFFFCFDFF),
             elevation: 0,
             margin: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+                side: const BorderSide(color: glassLine, width: .8)),
           ),
         ),
         home: const LoginPage(),
@@ -1028,47 +1031,315 @@ class _AppShellState extends State<AppShell> {
                 (_) => false);
           })
     ];
-    return Scaffold(
-        body: SafeArea(
-            child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 280),
-                switchInCurve: Curves.easeOutCubic,
-                switchOutCurve: Curves.easeInCubic,
-                transitionBuilder: (child, animation) => FadeTransition(
-                    opacity: animation,
-                    child: SlideTransition(
-                        position: Tween<Offset>(
-                                begin: const Offset(.025, 0), end: Offset.zero)
-                            .animate(animation),
-                        child: child)),
-                child: KeyedSubtree(key: ValueKey(tab), child: pages[tab]))),
-        bottomNavigationBar: NavigationBar(
-            selectedIndex: tab,
-            onDestinationSelected: (v) => setState(() => tab = v),
-            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-            destinations: const [
-              NavigationDestination(
-                  icon: Icon(Icons.home_outlined),
-                  selectedIcon: Icon(Icons.home),
-                  label: 'Beranda'),
-              NavigationDestination(
-                  icon: Icon(Icons.business_center_outlined),
-                  selectedIcon: Icon(Icons.business_center),
-                  label: 'Kasus'),
-              NavigationDestination(
-                  icon: Icon(Icons.description_outlined),
-                  selectedIcon: Icon(Icons.description),
-                  label: 'Bukti'),
-              NavigationDestination(
-                  icon: Icon(Icons.notifications_none),
-                  selectedIcon: Icon(Icons.notifications),
-                  label: 'Notifikasi'),
-              NavigationDestination(
-                  icon: Icon(Icons.person_outline),
-                  selectedIcon: Icon(Icons.person),
-                  label: 'Profil')
-            ]));
+    return LayoutBuilder(builder: (context, constraints) {
+      final desktop = constraints.maxWidth >= 900;
+      final content = SafeArea(
+          child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 280),
+              switchInCurve: Curves.easeOutCubic,
+              switchOutCurve: Curves.easeInCubic,
+              transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(
+                      position: Tween<Offset>(
+                              begin: const Offset(.025, 0), end: Offset.zero)
+                          .animate(animation),
+                      child: child)),
+              child: KeyedSubtree(key: ValueKey(tab), child: pages[tab])));
+      if (desktop) {
+        return Scaffold(
+          body: SafeArea(
+            child: Row(children: [
+              Container(
+                width: 248,
+                margin: const EdgeInsets.fromLTRB(18, 18, 0, 18),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(28),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF173B69), Color(0xFF0B1E37)],
+                  ),
+                  border:
+                      Border.all(color: Colors.white.withValues(alpha: .18)),
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Color(0x25102A4C),
+                        blurRadius: 28,
+                        offset: Offset(0, 12))
+                  ],
+                ),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(22, 24, 18, 24),
+                        child: Row(children: [
+                          Container(
+                            width: 42,
+                            height: 42,
+                            decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: .12),
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                    color:
+                                        Colors.white.withValues(alpha: .24))),
+                            child: const Icon(Icons.balance,
+                                color: Color(0xFFFFD475)),
+                          ),
+                          const SizedBox(width: 12),
+                          const Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                Text('VERITAS',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 17,
+                                        letterSpacing: 1.4)),
+                                SizedBox(height: 3),
+                                Text('PLEA GOVERNANCE',
+                                    style: TextStyle(
+                                        color: Color(0xFFB8CAE0),
+                                        fontSize: 9,
+                                        letterSpacing: 1.2,
+                                        fontWeight: FontWeight.w700)),
+                              ])),
+                        ]),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(22, 0, 16, 10),
+                          child: Text('MENU UTAMA',
+                              style: TextStyle(
+                                  color: Colors.white.withValues(alpha: .48),
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.4))),
+                      for (var i = 0; i < 5; i++)
+                        _DesktopNavItem(
+                          selected: tab == i,
+                          icon: [
+                            Icons.grid_view_rounded,
+                            Icons.folder_open_rounded,
+                            Icons.inventory_2_outlined,
+                            Icons.notifications_none_rounded,
+                            Icons.person_outline_rounded
+                          ][i],
+                          title: [
+                            'Beranda',
+                            'Kasus',
+                            'Bukti',
+                            'Notifikasi',
+                            'Profil'
+                          ][i],
+                          onTap: () => setState(() => tab = i),
+                        ),
+                      const Spacer(),
+                      Container(
+                        margin: const EdgeInsets.all(14),
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: .09),
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(
+                                color: Colors.white.withValues(alpha: .12))),
+                        child: Row(children: [
+                          const CircleAvatar(
+                              radius: 19,
+                              backgroundColor: Color(0xFFB9D5FF),
+                              child: Text('AS',
+                                  style: TextStyle(
+                                      color: navy,
+                                      fontWeight: FontWeight.w800))),
+                          const SizedBox(width: 10),
+                          Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                Text(DemoSession.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 12)),
+                                const SizedBox(height: 3),
+                                Text('${DemoSession.role} · Unit demo',
+                                    style: const TextStyle(
+                                        color: Color(0xFFB8CAE0), fontSize: 10))
+                              ]))
+                        ]),
+                      ),
+                    ]),
+              ),
+              Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 18, 22, 18),
+                      child: Column(children: [
+                        Container(
+                          height: 68,
+                          padding: const EdgeInsets.symmetric(horizontal: 22),
+                          decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: .88),
+                              borderRadius: BorderRadius.circular(22),
+                              border: Border.all(color: glassLine),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Color(0x0C102A4C),
+                                    blurRadius: 24,
+                                    offset: Offset(0, 8))
+                              ]),
+                          child: Row(children: [
+                            Container(
+                                width: 34,
+                                height: 34,
+                                decoration: BoxDecoration(
+                                    gradient: const LinearGradient(colors: [
+                                      Color(0xFFE6F0FF),
+                                      Color(0xFFF7FAFF)
+                                    ]),
+                                    borderRadius: BorderRadius.circular(11)),
+                                child: const Icon(Icons.auto_awesome,
+                                    size: 18, color: blue)),
+                            const SizedBox(width: 12),
+                            Text(
+                                [
+                                  'Ruang kerja',
+                                  'Manajemen kasus',
+                                  'Repositori bukti',
+                                  'Pusat notifikasi',
+                                  'Profil pengguna'
+                                ][tab],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: ink,
+                                    fontSize: 16)),
+                            const Spacer(),
+                            Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFF1F6FC),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(color: glassLine)),
+                                child: const Row(children: [
+                                  Icon(Icons.shield_outlined,
+                                      size: 16, color: teal),
+                                  SizedBox(width: 7),
+                                  Text('Lingkungan demo aman',
+                                      style: TextStyle(
+                                          color: navy,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w700))
+                                ])),
+                            const SizedBox(width: 14),
+                            IconButton(
+                                onPressed: () => setState(() => tab = 3),
+                                tooltip: 'Notifikasi',
+                                icon: const Badge(
+                                    backgroundColor: gold,
+                                    child: Icon(
+                                        Icons.notifications_none_rounded,
+                                        color: navy))),
+                          ]),
+                        ),
+                        const SizedBox(height: 14),
+                        Expanded(
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(26),
+                                child: content)),
+                      ]))),
+            ]),
+          ),
+        );
+      }
+      return Scaffold(
+          body: content,
+          bottomNavigationBar: NavigationBar(
+              selectedIndex: tab,
+              onDestinationSelected: (v) => setState(() => tab = v),
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+              destinations: const [
+                NavigationDestination(
+                    icon: Icon(Icons.home_outlined),
+                    selectedIcon: Icon(Icons.home),
+                    label: 'Beranda'),
+                NavigationDestination(
+                    icon: Icon(Icons.business_center_outlined),
+                    selectedIcon: Icon(Icons.business_center),
+                    label: 'Kasus'),
+                NavigationDestination(
+                    icon: Icon(Icons.description_outlined),
+                    selectedIcon: Icon(Icons.description),
+                    label: 'Bukti'),
+                NavigationDestination(
+                    icon: Icon(Icons.notifications_none),
+                    selectedIcon: Icon(Icons.notifications),
+                    label: 'Notifikasi'),
+                NavigationDestination(
+                    icon: Icon(Icons.person_outline),
+                    selectedIcon: Icon(Icons.person),
+                    label: 'Profil')
+              ]));
+    });
   }
+}
+
+class _DesktopNavItem extends StatelessWidget {
+  const _DesktopNavItem(
+      {required this.selected,
+      required this.icon,
+      required this.title,
+      required this.onTap});
+  final bool selected;
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: Material(
+          color: selected
+              ? Colors.white.withValues(alpha: .14)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(15),
+          child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(15),
+              child: Container(
+                  height: 48,
+                  padding: const EdgeInsets.symmetric(horizontal: 13),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      border: selected
+                          ? Border.all(
+                              color: Colors.white.withValues(alpha: .12))
+                          : null),
+                  child: Row(children: [
+                    Icon(icon,
+                        size: 19,
+                        color: selected
+                            ? const Color(0xFFFFD475)
+                            : const Color(0xFFB8CAE0)),
+                    const SizedBox(width: 12),
+                    Text(title,
+                        style: TextStyle(
+                            color: selected
+                                ? Colors.white
+                                : const Color(0xFFC2D0E0),
+                            fontSize: 13,
+                            fontWeight:
+                                selected ? FontWeight.w800 : FontWeight.w600)),
+                    if (selected) ...[
+                      const Spacer(),
+                      Container(
+                          width: 6,
+                          height: 6,
+                          decoration: const BoxDecoration(
+                              color: Color(0xFFFFD475), shape: BoxShape.circle))
+                    ]
+                  ])))));
 }
 
 class HomePage extends StatelessWidget {
@@ -1078,56 +1349,59 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       ListView(padding: const EdgeInsets.fromLTRB(20, 18, 20, 24), children: [
-        Row(children: [
-          IconButton(
-              onPressed: () => showModalBottomSheet(
-                  context: context,
-                  builder: (_) => SafeArea(
-                          child:
-                              Column(mainAxisSize: MainAxisSize.min, children: [
-                        ListTile(
-                            leading: const Icon(Icons.business_center_outlined),
-                            title: const Text('Daftar perkara'),
-                            onTap: () {
-                              Navigator.pop(context);
-                              goToTab(1);
-                            }),
-                        ListTile(
-                            leading: const Icon(Icons.history),
-                            title: const Text('Audit trail'),
-                            onTap: () {
-                              Navigator.pop(context);
-                              open(const AuditTrailPage());
-                            }),
-                        ListTile(
-                            leading: const Icon(Icons.help_outline),
-                            title: const Text('Pusat bantuan'),
-                            onTap: () {
-                              Navigator.pop(context);
-                              open(const HelpPage());
-                            })
-                      ]))),
-              icon: const Icon(Icons.menu, color: navy)),
-          const Spacer(),
-          const Text('Beranda',
-              style: TextStyle(fontSize: 23, fontWeight: FontWeight.w800)),
-          const Spacer(),
-          IconButton(
-              onPressed: () => goToTab(3),
-              icon: Badge(
-                  backgroundColor: Colors.amber,
-                  child: const Icon(Icons.notifications_none, color: navy))),
-          const SizedBox(width: 12),
-          InkWell(
-              onTap: () => goToTab(4),
-              borderRadius: BorderRadius.circular(30),
-              child: const CircleAvatar(
-                  backgroundColor: Color(0xFF174495),
-                  child: Text('AS',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold))))
-        ]),
-        const SizedBox(height: 34),
+        if (MediaQuery.sizeOf(context).width < 900)
+          Row(children: [
+            IconButton(
+                onPressed: () => showModalBottomSheet(
+                    context: context,
+                    builder: (_) => SafeArea(
+                            child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                              ListTile(
+                                  leading: const Icon(
+                                      Icons.business_center_outlined),
+                                  title: const Text('Daftar perkara'),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    goToTab(1);
+                                  }),
+                              ListTile(
+                                  leading: const Icon(Icons.history),
+                                  title: const Text('Audit trail'),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    open(const AuditTrailPage());
+                                  }),
+                              ListTile(
+                                  leading: const Icon(Icons.help_outline),
+                                  title: const Text('Pusat bantuan'),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    open(const HelpPage());
+                                  })
+                            ]))),
+                icon: const Icon(Icons.menu, color: navy)),
+            const Spacer(),
+            const Text('Beranda',
+                style: TextStyle(fontSize: 23, fontWeight: FontWeight.w800)),
+            const Spacer(),
+            IconButton(
+                onPressed: () => goToTab(3),
+                icon: Badge(
+                    backgroundColor: Colors.amber,
+                    child: const Icon(Icons.notifications_none, color: navy))),
+            const SizedBox(width: 12),
+            InkWell(
+                onTap: () => goToTab(4),
+                borderRadius: BorderRadius.circular(30),
+                child: const CircleAvatar(
+                    backgroundColor: Color(0xFF174495),
+                    child: Text('AS',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold))))
+          ]),
+        SizedBox(height: MediaQuery.sizeOf(context).width < 900 ? 34 : 12),
         const Text('Selamat pagi,',
             style: TextStyle(color: Color(0xFF63758D), fontSize: 18)),
         const SizedBox(height: 4),
@@ -1613,43 +1887,89 @@ class EvidencePage extends StatelessWidget {
 }
 
 // Shared visual components
-Widget pageHeader(BuildContext context, String title) => Row(children: [
-      IconButton(
-          onPressed: () => Navigator.maybePop(context),
-          icon: const Icon(Icons.arrow_back_ios_new, color: navy)),
+Widget pageHeader(BuildContext context, String title) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    decoration: BoxDecoration(
+      gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.white, Color(0xFFF1F6FC)]),
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Colors.white, width: 1.2),
+      boxShadow: const [
+        BoxShadow(
+            color: Color(0x17102A4C), blurRadius: 20, offset: Offset(0, 7)),
+        BoxShadow(color: Colors.white, blurRadius: 0, offset: Offset(0, 1))
+      ],
+    ),
+    child: Row(children: [
+      _GlassIconButton(
+          icon: Icons.arrow_back_ios_new_rounded,
+          onPressed: () => Navigator.maybePop(context)),
+      const SizedBox(width: 12),
       Expanded(
-          child: Text(title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontSize: 21, fontWeight: FontWeight.w800, color: ink))),
-      IconButton(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Text('VERITAS  /  RUANG KERJA',
+            style: TextStyle(
+                fontSize: 9,
+                letterSpacing: 1.3,
+                fontWeight: FontWeight.w800,
+                color: Color(0xFF7C8EA5))),
+        const SizedBox(height: 3),
+        Text(title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+                fontSize: 18, fontWeight: FontWeight.w800, color: ink)),
+      ])),
+      _GlassIconButton(
+          icon: Icons.more_horiz_rounded,
           onPressed: () => showModalBottomSheet(
-              context: context,
-              builder: (_) => SafeArea(
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    ListTile(
-                        leading: const Icon(Icons.history),
-                        title: const Text('Audit trail'),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const AuditTrailPage()));
-                        }),
-                    ListTile(
-                        leading: Icon(Icons.share_outlined),
-                        title: const Text('Bagikan ringkasan'),
-                        onTap: () {
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              content: Text(
-                                  'Ringkasan perkara siap dibagikan sesuai izin akses.')));
-                        }),
-                    const SizedBox(height: 10)
-                  ]))),
-          icon: const Icon(Icons.more_horiz, color: navy))
-    ]);
+                context: context,
+                builder: (_) => SafeArea(
+                    child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  ListTile(
+                      leading: const Icon(Icons.history),
+                      title: const Text('Audit trail'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const AuditTrailPage()));
+                      }),
+                  ListTile(
+                      leading: Icon(Icons.share_outlined),
+                      title: const Text('Bagikan ringkasan'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text(
+                                'Ringkasan perkara siap dibagikan sesuai izin akses.')));
+                      }),
+                  const SizedBox(height: 10)
+                ])),
+              )),
+    ]));
+
+class _GlassIconButton extends StatelessWidget {
+  const _GlassIconButton({required this.icon, required this.onPressed});
+  final IconData icon;
+  final VoidCallback onPressed;
+  @override
+  Widget build(BuildContext context) => Material(
+      color: const Color(0xFFEAF1F9),
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(12),
+          child: SizedBox(
+              width: 40,
+              height: 40,
+              child: Icon(icon, color: navy, size: 18))));
+}
+
 Widget sectionTitle(String title, {String? action}) => Padding(
     padding: const EdgeInsets.only(top: 25),
     child: Row(children: [
@@ -1700,9 +2020,23 @@ class SoftBanner extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-            color: c.withValues(alpha: .08),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white,
+                c.withValues(alpha: .075),
+                c.withValues(alpha: .12)
+              ],
+            ),
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: c.withValues(alpha: .22))),
+            border: Border.all(color: c.withValues(alpha: .2)),
+            boxShadow: const [
+              BoxShadow(
+                  color: Color(0x10102A4C),
+                  blurRadius: 16,
+                  offset: Offset(0, 6))
+            ]),
         child: Row(children: [
           Container(
               padding: const EdgeInsets.all(11),
